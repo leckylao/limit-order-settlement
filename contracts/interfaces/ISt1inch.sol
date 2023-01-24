@@ -12,4 +12,5 @@ interface ISt1inch is IERC20Pods {
     function oneInch() external view returns (IERC20);
     function emergencyExit() external view returns (bool);
     function depositFor(address account, uint256 amount) external;
+    function deposit(uint256 amount, uint256 duration) external;
 }
