@@ -3,18 +3,35 @@ const etherscan = { apiKey: {} };
 
 function register(name, chainId, url, privateKey, etherscanNetworkName, etherscanKey) {
     if (url && privateKey && etherscanKey) {
-        networks[name] = {
-            url,
-            chainId,
-            accounts: [privateKey],
-        };
-        etherscan.apiKey[etherscanNetworkName] = etherscanKey;
-        console.log(`Network '${name}' registered`);
+        if(name.match("fork")){
+            networks["hardhat"] = {};
+            networks["hardhat"]["forking"] = {
+                url,
+            };
+            etherscan.apiKey[etherscanNetworkName] = etherscanKey;
+            console.log(`Network '${name}' registered`);
+        }else{
+            networks[name] = {
+                url,
+                chainId,
+                accounts: [privateKey],
+            };
+            etherscan.apiKey[etherscanNetworkName] = etherscanKey;
+            console.log(`Network '${name}' registered`);
+        }
     } else {
         console.log(`Network '${name}' not registered`);
     }
 }
 
+register(
+    'mainnet-fork',
+    1,
+    process.env.MAINNET_RPC_URL,
+    process.env.MAINNET_PRIVATE_KEY,
+    'mainnet',
+    process.env.MAINNET_ETHERSCAN_KEY,
+);
 register(
     'mainnet',
     1,
